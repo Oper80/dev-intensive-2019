@@ -46,7 +46,7 @@ fun Date.humanizeDiff(date:Date = Date()): String {
         diff < -45 * MINUTES -> "через час"
         diff < -75 * SECONDS -> "через ${abs(diff / MINUTES)} ${pluralForm(abs((diff / MINUTES).toInt()), arrayListOf("минуту", "минуты", "минут"))}"
         diff < -45 * SECONDS -> "через минуту"
-        diff < 0 -> "через несколько секунд"
+        diff < -1 -> "через несколько секунд"
         diff <= 1 * SECONDS -> "только что"
         diff <= 45 * SECONDS -> "несколько секунд назад"
         diff <= 75 * SECONDS-> "минуту назад"
