@@ -69,7 +69,7 @@ object Utils {
         for (i in payload){
             when {
                 map.containsKey(i.toString()) -> s += map[i.toString()]
-                map.containsKey(i.toString().toLowerCase()) -> s += map[i.toString().toLowerCase()]!!.toUpperCase()
+                map.containsKey(i.toString().toLowerCase()) -> s += map[i.toString().capitalize()]!!.toUpperCase()
                 i.toString() == " " -> s += divider
                 else -> s += i
             }
