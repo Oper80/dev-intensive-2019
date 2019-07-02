@@ -1,9 +1,18 @@
 package ru.skillbranch.devintensive.utils
 
 object Utils {
-    fun parseFullName(fullName:String?):Pair<String?, String?>{
+    fun parseFullName(ifullName:String?):Pair<String?, String?>{
+        var fullName = ifullName
+        val pattern = " {2}".toRegex()
+        if (fullName != null) {
+            while (pattern.containsMatchIn(fullName!!)) {
+                fullName = fullName.replace("  ", " ")
+            }
+        }
+        fullName = fullName?.trim()
+
         val parts:List<String>? = fullName?.split(" ")
-        parts?.forEach{println(it)}
+
         val firstName = when(parts?.getOrNull(0)){
             "" -> null
             " " -> null
