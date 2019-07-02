@@ -10,8 +10,8 @@ data class User (
     var avatar:String?,
     var rating:Int = 0,
     var respect:Int = 0,
-    val lastVisit: Date? = Date(),
-    val isOnline:Boolean = false
+    var lastVisit: Date? = Date(),
+    var isOnline:Boolean = false
 
 
 ) {
@@ -26,6 +26,14 @@ data class User (
 
 
     constructor(id: String) : this(id, "John", "Doe")
+
+    constructor(id: String, firstName: String?, lastName: String?, lastVisit: Date?) : this(
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        avatar = null,
+        lastVisit = lastVisit
+    )
 
     init {
 //        introBit = getIntro()
@@ -70,7 +78,7 @@ data class User (
         fun avatar(avatar: String?) = apply { this.avatar = avatar }
         fun rating(rating: Int) = apply { this.rating = rating }
         fun respect(respect: Int) = apply { this.respect = respect }
-        fun lastVisit(lastVisit: Date) = apply { this.lastVisit = lastVisit }
+        fun lastVisit(lastVisit: Date?) = apply { this.lastVisit = lastVisit }
         fun isOnline(isOnline: Boolean) = apply { this.isOnline = isOnline }
         fun build() = User(id, firstName, lastName, avatar, rating, respect, lastVisit, isOnline)
     }
