@@ -29,9 +29,9 @@ data class User (
 
     init {
 //        introBit = getIntro()
-        println("It's Alive!!! \n" +
-                "${if(lastName==="Doe") "His name is $firstName $lastName" else "And his name is $firstName $lastName !!!"}\n" +
-                getIntro())
+//        println("It's Alive!!! \n" +
+//                "${if(lastName==="Doe") "His name is $firstName $lastName" else "And his name is $firstName $lastName !!!"}\n" +
+//                getIntro())
     }
 
     private fun getIntro() = """

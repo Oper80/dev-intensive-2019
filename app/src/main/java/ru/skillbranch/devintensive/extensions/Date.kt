@@ -2,7 +2,6 @@ package ru.skillbranch.devintensive.extensions
 
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.Collections.min
 import kotlin.collections.ArrayList
 import kotlin.math.abs
 import kotlin.math.min
@@ -12,19 +11,19 @@ const val MINUTES = 60 * SECONDS
 const val HOURS = 60 * MINUTES
 const val DAYS = 24 * HOURS
 
-fun Date.format(pattern:String = "HH.mm.ss dd.MM.yy"):String {
+fun Date.format(pattern:String = "HH:mm:ss dd.MM.yy"):String {
     val dateFormat = SimpleDateFormat(pattern, Locale("ru"))
     return dateFormat.format(this)
 }
 
-fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECONDS): Date {
+fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND): Date {
     var time = this.time
 
     time += when(units){
-        TimeUnits.SECONDS -> value * SECONDS
-        TimeUnits.MINUTES -> value * MINUTES
-        TimeUnits.HOURS -> value * HOURS
-        TimeUnits.DAYS -> value * DAYS
+        TimeUnits.SECOND -> value * SECONDS
+        TimeUnits.MINUTE -> value * MINUTES
+        TimeUnits.HOUR -> value * HOURS
+        TimeUnits.DAY -> value * DAYS
     }
     this.time = time
     return this
@@ -62,5 +61,5 @@ fun Date.humanizeDiff(date:Date = Date()): String {
 
 
 enum class TimeUnits{
-    SECONDS, MINUTES, HOURS, DAYS
+    SECOND, MINUTE, HOUR, DAY
 }

@@ -3,6 +3,7 @@ package ru.skillbranch.devintensive.utils
 object Utils {
     fun parseFullName(fullName:String?):Pair<String?, String?>{
         val parts:List<String>? = fullName?.split(" ")
+        parts?.forEach{println(it)}
         val firstName = when(parts?.getOrNull(0)){
             "" -> null
             " " -> null
@@ -69,7 +70,7 @@ object Utils {
         for (i in payload){
             when {
                 map.containsKey(i.toString()) -> s += map[i.toString()]
-                map.containsKey(i.toString().toLowerCase()) -> s += map[i.toString().capitalize()]!!.toUpperCase()
+                map.containsKey(i.toString().toLowerCase()) -> s += map[i.toString().toLowerCase()]!!.capitalize()
                 i.toString() == " " -> s += divider
                 else -> s += i
             }
