@@ -59,7 +59,17 @@ fun Date.humanizeDiff(date:Date = Date()): String {
     }
 }
 
-
 enum class TimeUnits{
-    SECOND, MINUTE, HOUR, DAY
+    SECOND, MINUTE, HOUR, DAY;
+
+    fun plural(number: Int):String {
+        val cases = arrayListOf(2, 0, 1, 1, 1, 2)
+        val words = when (this) {
+            SECOND -> arrayListOf<String>("секунду", "секунды", "секунд")
+            MINUTE -> arrayListOf<String>("минуту", "минуты", "минут")
+            HOUR -> arrayListOf<String>("час", "часа", "часов")
+            DAY -> arrayListOf<String>("день", "дня", "дней")
+        }
+        return "$number ${words[if (number % 100 in 5..19) 2 else cases[min(number % 10, 5)]]}"
+    }
 }
