@@ -11,6 +11,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.models.Bender
+import android.app.Activity
+import android.view.inputmethod.InputMethodManager
+
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var benderImage: ImageView
@@ -70,6 +73,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (v?.id == sendBtn.id) {
             val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
             messageEt.setText("")
+            hideKeyboard(this)
             val (r, g, b) = color
             benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
             textTxt.text = phrase
@@ -81,5 +85,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         outState.putString("STATUS", benderObj.status.name)
         outState.putString("QUESTION", benderObj.question.name)
         Log.d("M_MainActivity", "onSaveInstanceState ${benderObj.status.name}")
+    }
+
+    private fun hideKeyboard(activity: Activity) {
+        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        val view = activity.currentFocus ?: View(activity)
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
