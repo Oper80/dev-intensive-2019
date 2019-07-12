@@ -1,5 +1,7 @@
 package ru.skillbranch.devintensive.models
 
+import android.os.MessageQueue
+
 class Bender(var status: Status = Status.NORMAL, var question: Question = Question.NAME) {
 
     fun askQuestion(): String = when (question) {
@@ -12,18 +14,25 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     }
 
     fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> {
-
-        return if (question.answers.contains(answer)) {
-            question = question.nextQuestion()
-            "Отлично - это правильный ответ!\n${question.question}" to status.color
-        } else {
-            status = status.nextStatus()
-            if (status == Status.NORMAL) {
-                question = Question.NAME
-                "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
-            } else {
-                "Это неправильный ответ!\n${question.question}" to status.color
+        if (question.validate(answer) == "OK") {
+            return when {
+                question == Question.IDLE -> question.question to status.color
+                (question.answers.contains(answer)) -> {
+                    question = question.nextQuestion()
+                    "Отлично - это правильный ответ!\n${question.question}" to status.color
+                }
+                status == Status.CRITICAL -> {
+                    status = status.nextStatus()
+                    question = Question.NAME
+                    "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+                }
+                else -> {
+                    status = status.nextStatus()
+                    "Это неправильный ответ!\n${question.question}" to status.color
+                }
             }
+        } else {
+            return question.validate(answer) to status.color
         }
     }
 
@@ -90,11 +99,11 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
             override fun nextQuestion(): Question = IDLE
             override fun validate(ans: String): String {
                 if (ans.length != 7) {
-                    return "Серийный номер содержит только цифры и их 7"
+                    return "Серийный номер содержит только цифры, и их 7"
                 }
                 for (i in ans) {
                     if (!i.isDigit()) {
-                        return "Серийный номер содержит только цифры и их 7"
+                        return "Серийный номер содержит только цифры, и их 7"
                     }
                 }
                 return "OK"
