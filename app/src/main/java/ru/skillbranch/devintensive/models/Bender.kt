@@ -63,7 +63,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
                 }
             }
         },
-        PROFESSION("Назови мою профессию", listOf("bender", "сгибальщик")) {
+        PROFESSION("Назови мою профессию?", listOf("bender", "сгибальщик")) {
             override fun nextQuestion(): Question = MATERIAL
             override fun validate(ans: String): String {
                 return when {
