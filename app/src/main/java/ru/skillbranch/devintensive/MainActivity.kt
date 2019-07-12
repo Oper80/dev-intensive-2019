@@ -12,10 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.models.Bender
 import android.app.Activity
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import ru.skillbranch.devintensive.extensions.hideKeyboard
 
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEditorActionListener {
     lateinit var benderImage: ImageView
     lateinit var textTxt: TextView
     lateinit var messageEt: EditText
@@ -37,6 +40,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
+
+        messageEt.setOnEditorActionListener(this)
     }
 
     override fun onRestart() {
@@ -73,12 +78,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (v?.id == sendBtn.id) {
             val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
             messageEt.setText("")
-            hideKeyboard(this)
+            this.hideKeyboard()
             val (r, g, b) = color
             benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
             textTxt.text = phrase
         }
     }
+
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -87,11 +94,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Log.d("M_MainActivity", "onSaveInstanceState ${benderObj.status.name}")
     }
 
-    private fun hideKeyboard(activity: Activity) {
-        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        //Find the currently focused view, so we can grab the correct window token from it.
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        val view = activity.currentFocus ?: View(activity)
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    override fun onEditorAction(v:TextView, actionId:Int, event: KeyEvent):Boolean {
+        if(actionId== EditorInfo.IME_ACTION_DONE){
+            val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+            messageEt.setText("")
+            this.hideKeyboard()
+            val (r, g, b) = color
+            benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+            textTxt.text = phrase
+        }
+        return false
     }
 }
