@@ -11,24 +11,24 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.models.Bender
-import android.app.Activity
+import android.graphics.Rect
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import ru.skillbranch.devintensive.extensions.hideKeyboard
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEditorActionListener {
-    lateinit var benderImage: ImageView
-    lateinit var textTxt: TextView
-    lateinit var messageEt: EditText
-    lateinit var sendBtn: ImageView
-    lateinit var benderObj: Bender
+    private lateinit var benderImage: ImageView
+    private lateinit var textTxt: TextView
+    private lateinit var messageEt: EditText
+    private lateinit var sendBtn: ImageView
+    private lateinit var benderObj: Bender
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.d("M_MainActivity", "onCreate")
+
         benderImage = iv_bender
         textTxt = tv_text
         messageEt = et_message
