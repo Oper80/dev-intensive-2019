@@ -17,7 +17,7 @@ import android.view.inputmethod.EditorInfo
 import ru.skillbranch.devintensive.extensions.hideKeyboard
 
 
-class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEditorActionListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var benderImage: ImageView
     private lateinit var textTxt: TextView
     private lateinit var messageEt: EditText
@@ -41,7 +41,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
 
-        messageEt.setOnEditorActionListener(this)
+        messageEt.setOnEditorActionListener { v, actionId, event ->
+            if(actionId == EditorInfo.IME_ACTION_DONE){
+                val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+                messageEt.setText("")
+                this.hideKeyboard()
+                val (r, g, b) = color
+                benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+                textTxt.text = phrase
+                true
+            } else {
+                false
+            }
+        }
     }
 
     override fun onRestart() {
@@ -94,15 +106,5 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
         Log.d("M_MainActivity", "onSaveInstanceState ${benderObj.status.name}")
     }
 
-    override fun onEditorAction(v:TextView, actionId:Int, event: KeyEvent):Boolean {
-        if(actionId== EditorInfo.IME_ACTION_DONE){
-            val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
-            messageEt.setText("")
-            this.hideKeyboard()
-            val (r, g, b) = color
-            benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-            textTxt.text = phrase
-        }
-        return false
-    }
+
 }
