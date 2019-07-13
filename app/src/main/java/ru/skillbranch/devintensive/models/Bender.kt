@@ -99,11 +99,11 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
             override fun nextQuestion(): Question = IDLE
             override fun validate(ans: String): String {
                 if (ans.length != 7) {
-                    return "Серийный номер содержит только цифры, и их 7"
+                    return "Серийный номер содержит только цифры и их 7"
                 }
                 for (i in ans) {
                     if (!i.isDigit()) {
-                        return "Серийный номер содержит только цифры, и их 7"
+                        return "Серийный номер содержит только цифры и их 7"
                     }
                 }
                 return "OK"
