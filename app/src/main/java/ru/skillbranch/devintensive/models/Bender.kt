@@ -32,7 +32,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
                 }
             }
         } else {
-            return question.validate(answer) to status.color
+            return "${question.validate(answer)}\n${question.question}" to status.color
         }
     }
 

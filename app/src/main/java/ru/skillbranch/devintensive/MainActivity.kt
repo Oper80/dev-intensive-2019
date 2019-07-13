@@ -89,12 +89,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun ans() {
         val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
-        messageEt.setText("")
         this.hideKeyboard()
+        messageEt.setText("")
         val (r, g, b) = color
         benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
         textTxt.text = phrase
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
