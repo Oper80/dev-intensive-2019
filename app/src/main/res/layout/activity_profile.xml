@@ -65,7 +65,7 @@
                 style="@style/Profile.Header.Rank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_name"
+                android:layout_below="@id/tv_nick_name"
                 android:layout_centerHorizontal="true"
                 tools:text="Junior Android Developer" />
         </RelativeLayout>
