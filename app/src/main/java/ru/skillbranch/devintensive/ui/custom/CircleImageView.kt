@@ -46,13 +46,8 @@ class CircleImageView @JvmOverloads constructor(
         update()
     }
 
-    @RequiresApi(26)
-    fun getBorderColor():Color{
-        val red = Color.red(cv_borderColor)
-        val green = Color.green(cv_borderColor)
-        val blue = Color.blue(cv_borderColor)
-
-        return Color.valueOf(cv_borderColor)
+    fun getBorderColor():Int{
+        return cv_borderColor
     }
 
    fun setBorderColor(@ColorRes colorId: Int){

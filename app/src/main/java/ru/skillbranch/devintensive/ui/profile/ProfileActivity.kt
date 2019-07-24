@@ -13,7 +13,11 @@ import kotlinx.android.synthetic.main.activity_profile.*
 import androidx.lifecycle.ViewModelProviders
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.Profile
+import ru.skillbranch.devintensive.utils.Utils
 import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
+import android.view.KeyEvent.KEYCODE_ENTER
+import android.view.inputmethod.EditorInfo
+import android.view.KeyEvent
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -48,8 +52,8 @@ class ProfileActivity : AppCompatActivity() {
         with(btn_edit) {
             val filter: ColorFilter? = if (isEdit) {
                 PorterDuffColorFilter(
-                    resources.getColor(R.color.color_accent, theme),
-                    PorterDuff.Mode.SRC_IN
+                        resources.getColor(R.color.color_accent, theme),
+                        PorterDuff.Mode.SRC_IN
                 )
             } else {
                 null
@@ -91,33 +95,54 @@ class ProfileActivity : AppCompatActivity() {
     private fun initViews(savedInstanceState: Bundle?) {
 
         viewFields = mapOf(
-            "nickname" to tv_nick_name,
-            "rank" to tv_rank,
-            "firstName" to et_first_name,
-            "lastName" to et_last_name,
-            "about" to et_about,
-            "repository" to et_repository,
-            "rating" to tv_rating,
-            "respect" to tv_respect
+                "nickname" to tv_nick_name,
+                "rank" to tv_rank,
+                "firstName" to et_first_name,
+                "lastName" to et_last_name,
+                "about" to et_about,
+                "repository" to et_repository,
+                "rating" to tv_rating,
+                "respect" to tv_respect
         )
         isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
         showCurrentMode(isEditMode)
         btn_edit.setOnClickListener {
-            if (isEditMode) saveProfileInfo()
+            if (isEditMode) {
+                if (Utils.isInvalidGithub(et_repository.text.toString())) {
+                    et_repository.text.clear()
+                }
+                saveProfileInfo()
+            }
             isEditMode = !isEditMode
             showCurrentMode(isEditMode)
         }
         btn_switch_theme.setOnClickListener {
             viewModel.switchTheme()
         }
+
+        et_repository.setOnEditorActionListener { _, actionId, event ->
+            if ((actionId == EditorInfo.IME_ACTION_SEARCH ||
+                            actionId == EditorInfo.IME_ACTION_DONE ||
+                            event != null &&
+                            event.action == KeyEvent.ACTION_DOWN &&
+                            event.keyCode == KEYCODE_ENTER)) {
+                if (Utils.isInvalidGithub(et_repository.text.toString())) {
+                    wr_repository.error = "Невалидный адрес репозитория"
+                } else {
+                    wr_repository.error = ""
+                }
+            }
+            false
+        }
     }
+
 
     private fun saveProfileInfo() {
         Profile(
-            firstName = et_first_name.text.toString(),
-            lastName = et_last_name.text.toString(),
-            about = et_about.text.toString(),
-            repository = et_repository.text.toString()
+                firstName = et_first_name.text.toString(),
+                lastName = et_last_name.text.toString(),
+                about = et_about.text.toString(),
+                repository = et_repository.text.toString()
 
         ).apply {
             viewModel.saveProfileData(this)
