@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.ImageView
 import androidx.annotation.ColorRes
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColor
 import androidx.core.graphics.toColorInt
@@ -45,6 +46,7 @@ class CircleImageView @JvmOverloads constructor(
         update()
     }
 
+    @RequiresApi(26)
     fun getBorderColor():Color{
         val red = Color.red(cv_borderColor)
         val green = Color.green(cv_borderColor)

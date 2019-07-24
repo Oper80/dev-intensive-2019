@@ -5,6 +5,10 @@
 
     </style>
 
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/ic_splash</item>
+    </style>
+
     <style name="Profile.EditText" parent="Profile">
         <item name="android:textColor">?attr/colorPrimary</item>
         <item name="android:paddingTop">4dp</item>
@@ -49,6 +53,7 @@
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">@dimen/font_large_20</item>
     </style>
+
     <style name="Profile.InfoItem">
         <item name="android:paddingTop">@dimen/spacing_normal_16</item>
         <item name="android:paddingBottom">5dp</item>
