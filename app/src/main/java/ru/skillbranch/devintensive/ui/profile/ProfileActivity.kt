@@ -110,6 +110,7 @@ class ProfileActivity : AppCompatActivity() {
             if (isEditMode) {
                 if (Utils.isInvalidGithub(et_repository.text.toString())) {
                     et_repository.text.clear()
+                    wr_repository.error = ""
                 }
                 saveProfileInfo()
             }
