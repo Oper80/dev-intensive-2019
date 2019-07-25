@@ -40,7 +40,7 @@ object PreferencesRepository {
 
     }
 
-    fun getProfile(): Profile? {
+    fun getProfile():  Profile{
         return Profile(
             prefs.getString(FIRST_NAME, "")!!,
             prefs.getString(LAST_NAME, "")!!,

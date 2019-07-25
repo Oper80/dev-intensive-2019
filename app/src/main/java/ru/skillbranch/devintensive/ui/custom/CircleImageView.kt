@@ -91,10 +91,10 @@ class CircleImageView @JvmOverloads constructor(
         canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paint)
 
 
-        textPaint.color = Color.BLACK
-        textPaint.textSize = 48f
-        textPaint.isAntiAlias = true
-        canvas.drawText("MG", circleCenterWithBorder, circleCenterWithBorder, textPaint)
+//        textPaint.color = Color.BLACK
+//        textPaint.textSize = 48f
+//        textPaint.isAntiAlias = true
+//        canvas.drawText("MG", circleCenterWithBorder, circleCenterWithBorder, textPaint)
     }
 
     private fun update() {
