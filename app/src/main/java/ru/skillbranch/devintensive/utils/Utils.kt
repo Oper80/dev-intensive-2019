@@ -112,8 +112,8 @@ object Utils {
                 "https://www.github.com/"
         )
         for (prefix in prefixes) {
-            if (path.startsWith(prefix)) {
-                account = path.removePrefix(prefix)
+            if (path.toLowerCase().startsWith(prefix)) {
+                account = path.toLowerCase().removePrefix(prefix)
                 return account.isEmpty() || account in except || account.contains("/") || account.contains(" ")
             }
         }
