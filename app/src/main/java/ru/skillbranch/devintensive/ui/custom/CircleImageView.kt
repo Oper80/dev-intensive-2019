@@ -1,9 +1,11 @@
 package ru.skillbranch.devintensive.ui.custom
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.text.TextPaint
 import android.util.AttributeSet
 import android.widget.ImageView
 import androidx.annotation.ColorRes
@@ -15,13 +17,10 @@ import ru.skillbranch.devintensive.R
 import kotlin.math.min
 
 
-
-
-
 class CircleImageView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : ImageView(context, attrs, defStyleAttr) {
     companion object {
         private const val DEFAULT_BORDER_COLOR = Color.WHITE
@@ -29,6 +28,7 @@ class CircleImageView @JvmOverloads constructor(
     }
 
     private val paint: Paint = Paint().apply { isAntiAlias = true }
+    private val textPaint: TextPaint = TextPaint().apply { isAntiAlias = true }
     private val paintBorder: Paint = Paint().apply { isAntiAlias = true }
     private val paintBackground: Paint = Paint().apply { isAntiAlias = true }
     private var circleCenter = 0
@@ -37,25 +37,25 @@ class CircleImageView @JvmOverloads constructor(
     var cv_borderWidth: Float = DEFAULT_BORDER_WIDTH
     var cv_borderColor: Int = DEFAULT_BORDER_COLOR
 
-    fun getBorderWidth():Int{
+    fun getBorderWidth(): Int {
         return cv_borderWidth.toInt()
     }
 
-    fun setBorderWidth(dp:Int){
+    fun setBorderWidth(dp: Int) {
         cv_borderWidth = dp.toFloat()
         update()
     }
 
-    fun getBorderColor():Int{
+    fun getBorderColor(): Int {
         return cv_borderColor
     }
 
-   fun setBorderColor(@ColorRes colorId: Int){
+    fun setBorderColor(@ColorRes colorId: Int) {
         cv_borderColor = ContextCompat.getColor(context, colorId)
         update()
     }
 
-    fun setBorderColor(hex: String){
+    fun setBorderColor(hex: String) {
         cv_borderColor = Color.parseColor(hex)
         update()
     }
@@ -74,6 +74,7 @@ class CircleImageView @JvmOverloads constructor(
         }
     }
 
+
     override fun onDraw(canvas: Canvas) {
         loadBitmap()
 
@@ -88,6 +89,12 @@ class CircleImageView @JvmOverloads constructor(
         canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paintBackground)
         // Draw CircularImageView
         canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paint)
+
+
+        textPaint.color = Color.BLACK
+        textPaint.textSize = 48f
+        textPaint.isAntiAlias = true
+        canvas.drawText("MG", circleCenterWithBorder, circleCenterWithBorder, textPaint)
     }
 
     private fun update() {
@@ -151,21 +158,22 @@ class CircleImageView @JvmOverloads constructor(
     }
 
     private fun drawableToBitmap(drawable: Drawable?): Bitmap? =
-            when (drawable) {
-                null -> null
-                is BitmapDrawable -> drawable.bitmap
-                else -> try {
-                    // Create Bitmap object out of the drawable
-                    val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
-                    val canvas = Canvas(bitmap)
-                    drawable.setBounds(0, 0, canvas.width, canvas.height)
-                    drawable.draw(canvas)
-                    bitmap
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    null
-                }
+        when (drawable) {
+            null -> null
+            is BitmapDrawable -> drawable.bitmap
+            else -> try {
+                // Create Bitmap object out of the drawable
+                val bitmap =
+                    Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+                val canvas = Canvas(bitmap)
+                drawable.setBounds(0, 0, canvas.width, canvas.height)
+                drawable.draw(canvas)
+                bitmap
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
             }
+        }
 }
 
 
