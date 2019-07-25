@@ -130,9 +130,10 @@ class ProfileActivity : AppCompatActivity() {
         et_repository.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus){
                 if (Utils.isInvalidGithub(et_repository.text.toString())) {
+                    wr_repository.isErrorEnabled = true
                     wr_repository.error = "Невалидный адрес репозитория"
                 } else {
-                    wr_repository.error = ""
+                    wr_repository.isErrorEnabled = false
                 }
             }
         }
@@ -144,9 +145,10 @@ class ProfileActivity : AppCompatActivity() {
                             event.action == KeyEvent.ACTION_DOWN &&
                             event.keyCode == KEYCODE_ENTER)) {
                 if (Utils.isInvalidGithub(et_repository.text.toString())) {
+                    wr_repository.isErrorEnabled = true
                     wr_repository.error = "Невалидный адрес репозитория"
                 } else {
-                    wr_repository.error = ""
+                    wr_repository.isErrorEnabled = false
                 }
             }
             false
