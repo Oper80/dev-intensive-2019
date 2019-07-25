@@ -18,6 +18,10 @@ import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
 import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.inputmethod.EditorInfo
 import android.view.KeyEvent
+import android.view.View.OnFocusChangeListener
+
+
+
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -123,6 +127,16 @@ class ProfileActivity : AppCompatActivity() {
             viewModel.switchTheme()
         }
 
+        et_repository.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus){
+                if (Utils.isInvalidGithub(et_repository.text.toString())) {
+                    wr_repository.error = "Невалидный адрес репозитория"
+                } else {
+                    wr_repository.error = ""
+                }
+            }
+        }
+
         et_repository.setOnEditorActionListener { _, actionId, event ->
             if ((actionId == EditorInfo.IME_ACTION_SEARCH ||
                             actionId == EditorInfo.IME_ACTION_DONE ||
@@ -152,3 +166,4 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 }
+
