@@ -86,39 +86,16 @@ class CircleImageView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         loadBitmap()
 
-        val metrics = context.resources.displayMetrics
-        val fpixels = metrics.density
-        val pixels = (fpixels + 0.5f)
-
         // Check if civImage isn't null
         if (civImage == null) return
 
         val circleCenterWithBorder = circleCenter + cv_borderWidth
 
-        paintBackground.color = fetchAccentColor()
-
-        if (ProfileActivity.initials == "") {
             // Draw Border
             canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenterWithBorder, paintBorder)
-            // Draw Circle background
-            canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paintBackground)
+
             // Draw CircularImageView
             canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paint)
-        } else {
-
-            textPaint.color = Color.WHITE
-            textPaint.textSize = 48 * pixels
-            paintBackground.color = fetchAccentColor()
-            textPaint.bgColor = fetchAccentColor()
-            textPaint.isAntiAlias = true
-            val textBounds =  Rect()
-            textPaint.getTextBounds(ProfileActivity.initials, 0, ProfileActivity.initials.length, textBounds)
-
-
-            canvas.drawCircle(circleCenter.toFloat(), circleCenter.toFloat(), circleCenter.toFloat(), paintBackground)
-            canvas.drawText(ProfileActivity.initials, circleCenter - textBounds.exactCenterX(), circleCenter - textBounds.exactCenterY(), textPaint)
-           // canvas.drawText(ProfileActivity.initials, circleCenterWithBorder, circleCenterWithBorder, textPaint)
-        }
     }
 
     private fun update() {
@@ -137,16 +114,6 @@ class CircleImageView @JvmOverloads constructor(
         invalidate()
     }
 
-    private fun fetchAccentColor(): Int {
-        val typedValue = TypedValue()
-
-        val a = context.obtainStyledAttributes(typedValue.data, intArrayOf(R.attr.colorAccent))
-        val color = a.getColor(0, 0)
-
-        a.recycle()
-
-        return color
-    }
 
     private fun loadBitmap() {
         if (civDrawable == drawable) return

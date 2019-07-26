@@ -1,6 +1,7 @@
 package ru.skillbranch.devintensive.ui.profile
 
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextPaint
@@ -21,18 +22,19 @@ import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.inputmethod.EditorInfo
 import android.view.KeyEvent
 import android.view.View.OnFocusChangeListener
+import kotlin.math.roundToInt
 
 
 class ProfileActivity : AppCompatActivity() {
 
     companion object {
         const val IS_EDIT_MODE = "IS_EDIT_MODE"
-        var initials = ""
     }
 
     private lateinit var viewModel: ProfileViewModel
     var isEditMode = false
     lateinit var viewFields: Map<String, TextView>
+    lateinit var initials: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -95,8 +97,9 @@ class ProfileActivity : AppCompatActivity() {
         val fn = et_first_name.text?.toString()
         val ln = et_last_name.text?.toString()
         initials = Utils.toInitials(fn, ln) ?: ""
-
-        iv_avatar.setImageDrawable(resources.getDrawable(R.drawable.avatar_default, theme))
+        if (initials != ""){
+            drawDefaultAvatar(initials)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -154,16 +157,7 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
-    private fun fetchAccentColor(): Int {
-        val typedValue = TypedValue()
 
-        val a = this.obtainStyledAttributes(typedValue.data, intArrayOf(R.attr.colorAccent))
-        val color = a.getColor(0, 0)
-
-        a.recycle()
-
-        return color
-    }
 
     private fun saveProfileInfo() {
         Profile(
@@ -175,6 +169,45 @@ class ProfileActivity : AppCompatActivity() {
         ).apply {
             viewModel.saveProfileData(this)
         }
+    }
+
+    private fun drawDefaultAvatar(initials: String, textSize: Float = 48f, color: Int = Color.WHITE) {
+        val bitmap = textAsBitmap(initials, textSize, color)
+        val drawable = BitmapDrawable(resources, bitmap)
+        iv_avatar.setImageDrawable(drawable)
+    }
+
+    private fun textAsBitmap(text:String, textSize:Float, textColor:Int): Bitmap {
+        val dp = resources.displayMetrics.density.roundToInt()
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.textSize = textSize*dp
+        paint.color = textColor
+        paint.textAlign = Paint.Align.CENTER
+
+        val avatarSize = iv_avatar.layoutParams.height
+        val image = Bitmap.createBitmap(avatarSize, avatarSize, Bitmap.Config.ARGB_8888)
+
+        image.eraseColor(fetchAccentColor())
+        val canvas = Canvas(image)
+
+        //val textBounds =  Rect()
+        //paint.getTextBounds(initials, 0, initials.length, textBounds)
+        //canvas.drawText(initials, textBounds.exactCenterX(), 0 - textBounds.exactCenterY(), paint)
+        //val x = textBounds.exactCenterX()
+        //val y = textBounds.exactCenterY()
+        canvas.drawText(text, 48f*dp, 48f*dp + paint.textSize/3, paint)
+        return image
+    }
+
+    private fun fetchAccentColor(): Int {
+        val typedValue = TypedValue()
+
+        val a = this.obtainStyledAttributes(typedValue.data, intArrayOf(R.attr.colorAccent))
+        val color = a.getColor(0, 0)
+
+        a.recycle()
+
+        return color
     }
 }
 
