@@ -95,7 +95,7 @@ object Utils {
     }
 
     fun isInvalidGithub(path: String?): Boolean {
-        if (path.isNullOrEmpty()) return true
+        if (path.isNullOrEmpty()) return false
         var account = ""
         val except = listOf(
                 "enterprise",
