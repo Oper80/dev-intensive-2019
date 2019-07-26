@@ -101,6 +101,7 @@ class CircleImageView @JvmOverloads constructor(
             textPaint.color = Color.WHITE
             textPaint.textSize = 48f
             paintBackground.color = fetchAccentColor()
+            textPaint.bgColor = fetchAccentColor()
             textPaint.isAntiAlias = true
             textPaint.textAlign = Paint.Align.CENTER
             canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paintBackground)
