@@ -19,6 +19,10 @@ import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.ui.profile.ProfileActivity
 import ru.skillbranch.devintensive.utils.Utils
 import kotlin.math.min
+import android.util.DisplayMetrics
+
+
+
 
 
 class CircleImageView @JvmOverloads constructor(
@@ -82,6 +86,10 @@ class CircleImageView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         loadBitmap()
 
+        val metrics = context.resources.displayMetrics
+        val fpixels = metrics.density
+        val pixels = (fpixels + 0.5f)
+
         // Check if civImage isn't null
         if (civImage == null) return
 
@@ -99,13 +107,17 @@ class CircleImageView @JvmOverloads constructor(
         } else {
 
             textPaint.color = Color.WHITE
-            textPaint.textSize = 48f
+            textPaint.textSize = 48 * pixels
             paintBackground.color = fetchAccentColor()
             textPaint.bgColor = fetchAccentColor()
             textPaint.isAntiAlias = true
-            textPaint.textAlign = Paint.Align.CENTER
-            canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paintBackground)
-            canvas.drawText(ProfileActivity.initials, circleCenterWithBorder, circleCenterWithBorder, textPaint)
+            val textBounds =  Rect()
+            textPaint.getTextBounds(ProfileActivity.initials, 0, ProfileActivity.initials.length, textBounds)
+
+
+            canvas.drawCircle(circleCenter.toFloat(), circleCenter.toFloat(), circleCenter.toFloat(), paintBackground)
+            canvas.drawText(ProfileActivity.initials, circleCenter - textBounds.exactCenterX(), circleCenter - textBounds.exactCenterY(), textPaint)
+           // canvas.drawText(ProfileActivity.initials, circleCenterWithBorder, circleCenterWithBorder, textPaint)
         }
     }
 
