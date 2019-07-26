@@ -1,5 +1,12 @@
 package ru.skillbranch.devintensive.utils
 
+import android.R
+import android.R.attr.data
+import android.content.res.TypedArray
+import android.util.TypedValue
+
+
+
 object Utils {
     fun parseFullName(isFullName: String?): Pair<String?, String?> {
         var fullName = isFullName
@@ -119,4 +126,5 @@ object Utils {
         }
         return true
     }
+
 }

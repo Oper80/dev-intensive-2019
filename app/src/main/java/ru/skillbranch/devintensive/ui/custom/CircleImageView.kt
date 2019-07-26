@@ -7,13 +7,17 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColor
 import androidx.core.graphics.toColorInt
+import kotlinx.android.synthetic.main.activity_profile.view.*
 import ru.skillbranch.devintensive.R
+import ru.skillbranch.devintensive.ui.profile.ProfileActivity
+import ru.skillbranch.devintensive.utils.Utils
 import kotlin.math.min
 
 
@@ -83,18 +87,25 @@ class CircleImageView @JvmOverloads constructor(
 
         val circleCenterWithBorder = circleCenter + cv_borderWidth
 
-        // Draw Border
-        canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenterWithBorder, paintBorder)
-        // Draw Circle background
-        canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paintBackground)
-        // Draw CircularImageView
-        canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paint)
+        paintBackground.color = fetchAccentColor()
 
+        if (ProfileActivity.initials == "") {
+            // Draw Border
+            canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenterWithBorder, paintBorder)
+            // Draw Circle background
+            canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paintBackground)
+            // Draw CircularImageView
+            canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paint)
+        } else {
 
-//        textPaint.color = Color.BLACK
-//        textPaint.textSize = 48f
-//        textPaint.isAntiAlias = true
-//        canvas.drawText("MG", circleCenterWithBorder, circleCenterWithBorder, textPaint)
+            textPaint.color = Color.WHITE
+            textPaint.textSize = 48f
+            paintBackground.color = fetchAccentColor()
+            textPaint.isAntiAlias = true
+            textPaint.textAlign = Paint.Align.CENTER
+            canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paintBackground)
+            canvas.drawText(ProfileActivity.initials, circleCenterWithBorder, circleCenterWithBorder, textPaint)
+        }
     }
 
     private fun update() {
@@ -111,6 +122,17 @@ class CircleImageView @JvmOverloads constructor(
         paintBorder.color = cv_borderColor
 
         invalidate()
+    }
+
+    private fun fetchAccentColor(): Int {
+        val typedValue = TypedValue()
+
+        val a = context.obtainStyledAttributes(typedValue.data, intArrayOf(R.attr.colorAccent))
+        val color = a.getColor(0, 0)
+
+        a.recycle()
+
+        return color
     }
 
     private fun loadBitmap() {

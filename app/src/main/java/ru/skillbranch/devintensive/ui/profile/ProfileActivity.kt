@@ -1,10 +1,9 @@
 package ru.skillbranch.devintensive.ui.profile
 
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
+import android.graphics.*
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextPaint
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
@@ -27,6 +26,7 @@ class ProfileActivity : AppCompatActivity() {
 
     companion object {
         const val IS_EDIT_MODE = "IS_EDIT_MODE"
+        var initials = ""
     }
 
     private lateinit var viewModel: ProfileViewModel
@@ -39,6 +39,7 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
         initViews(savedInstanceState)
         initViewModel()
+
     }
 
     private fun showCurrentMode(isEdit: Boolean) {
@@ -90,6 +91,11 @@ class ProfileActivity : AppCompatActivity() {
 
             }
         }
+        val fn = et_first_name.text?.toString()
+        val ln = et_last_name.text?.toString()
+        initials = Utils.toInitials(fn, ln) ?: ""
+
+        iv_avatar.setImageDrawable(resources.getDrawable(R.drawable.avatar_default, theme))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -115,7 +121,7 @@ class ProfileActivity : AppCompatActivity() {
             if (isEditMode) {
                 if (Utils.isInvalidGithub(et_repository.text.toString())) {
                     et_repository.text.clear()
-                    wr_repository.error = ""
+                    wr_repository.isErrorEnabled = false
                 }
                 saveProfileInfo()
             }
