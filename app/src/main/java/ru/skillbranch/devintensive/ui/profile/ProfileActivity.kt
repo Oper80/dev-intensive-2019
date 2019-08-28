@@ -190,11 +190,6 @@ class ProfileActivity : AppCompatActivity() {
         image.eraseColor(fetchAccentColor())
         val canvas = Canvas(image)
 
-        //val textBounds =  Rect()
-        //paint.getTextBounds(initials, 0, initials.length, textBounds)
-        //canvas.drawText(initials, textBounds.exactCenterX(), 0 - textBounds.exactCenterY(), paint)
-        //val x = textBounds.exactCenterX()
-        //val y = textBounds.exactCenterY()
         canvas.drawText(text, 48f*dp, 48f*dp + paint.textSize/3, paint)
         return image
     }

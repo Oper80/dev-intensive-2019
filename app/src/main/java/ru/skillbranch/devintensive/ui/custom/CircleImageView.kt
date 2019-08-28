@@ -1,34 +1,23 @@
 package ru.skillbranch.devintensive.ui.custom
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.widget.ImageView
 import androidx.annotation.ColorRes
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.toColor
-import androidx.core.graphics.toColorInt
-import kotlinx.android.synthetic.main.activity_profile.view.*
 import ru.skillbranch.devintensive.R
-import ru.skillbranch.devintensive.ui.profile.ProfileActivity
-import ru.skillbranch.devintensive.utils.Utils
 import kotlin.math.min
-import android.util.DisplayMetrics
-
-
-
+import kotlin.math.roundToInt
 
 
 class CircleImageView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0
 ) : ImageView(context, attrs, defStyleAttr) {
     companion object {
         private const val DEFAULT_BORDER_COLOR = Color.WHITE
@@ -41,9 +30,15 @@ class CircleImageView @JvmOverloads constructor(
     private val paintBackground: Paint = Paint().apply { isAntiAlias = true }
     private var circleCenter = 0
     private var heightCircle: Int = 0
+    private var avatarInitials: String? = null
 
     var cv_borderWidth: Float = DEFAULT_BORDER_WIDTH
     var cv_borderColor: Int = DEFAULT_BORDER_COLOR
+
+
+    fun setInitials(initials: String) {
+        avatarInitials = initials
+    }
 
     fun getBorderWidth(): Int {
         return cv_borderWidth.toInt()
@@ -91,11 +86,11 @@ class CircleImageView @JvmOverloads constructor(
 
         val circleCenterWithBorder = circleCenter + cv_borderWidth
 
-            // Draw Border
-            canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenterWithBorder, paintBorder)
+        // Draw Border
+        canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenterWithBorder, paintBorder)
 
-            // Draw CircularImageView
-            canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paint)
+        // Draw CircularImageView
+        canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paint)
     }
 
     private fun update() {
@@ -116,10 +111,15 @@ class CircleImageView @JvmOverloads constructor(
 
 
     private fun loadBitmap() {
-        if (civDrawable == drawable) return
+        if (avatarInitials == null) {
+            if (civDrawable == drawable) return
+            civDrawable = drawable
+            civImage = drawableToBitmap(civDrawable)
+        }else{
+            civImage = textAsBitmap(avatarInitials.toString(), 48f, Color.WHITE)
+            civDrawable = BitmapDrawable(resources, civImage)
+        }
 
-        civDrawable = drawable
-        civImage = drawableToBitmap(civDrawable)
         updateShader()
     }
 
@@ -159,24 +159,41 @@ class CircleImageView @JvmOverloads constructor(
         }
     }
 
+    private fun textAsBitmap(text: String, textSize: Float, textColor: Int): Bitmap {
+        val dp = resources.displayMetrics.density.roundToInt()
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.textSize = textSize * dp
+        paint.color = textColor
+        paint.textAlign = Paint.Align.CENTER
+
+        val image = Bitmap.createBitmap(R.dimen.avatar_item_size, R.dimen.avatar_item_size, Bitmap.Config.ARGB_8888)
+
+        image.eraseColor(R.attr.colorAccent)
+        val canvas = Canvas(image)
+        canvas.drawText(text, 48f * dp, 48f * dp + paint.textSize / 3, paint)
+        return image
+    }
+
     private fun drawableToBitmap(drawable: Drawable?): Bitmap? =
-        when (drawable) {
-            null -> null
-            is BitmapDrawable -> drawable.bitmap
-            else -> try {
-                // Create Bitmap object out of the drawable
-                val bitmap =
-                    Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
-                val canvas = Canvas(bitmap)
-                drawable.setBounds(0, 0, canvas.width, canvas.height)
-                drawable.draw(canvas)
-                bitmap
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
+            when (drawable) {
+                null -> null
+                is BitmapDrawable -> drawable.bitmap
+                else -> try {
+                    // Create Bitmap object out of the drawable
+                    val bitmap =
+                            Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+                    val canvas = Canvas(bitmap)
+                    drawable.setBounds(0, 0, canvas.width, canvas.height)
+                    drawable.draw(canvas)
+                    bitmap
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
             }
-        }
 }
+
+
 
 
 
