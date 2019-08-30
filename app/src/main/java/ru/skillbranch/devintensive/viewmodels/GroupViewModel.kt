@@ -1,6 +1,7 @@
 package ru.skillbranch.devintensive.viewmodels
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import ru.skillbranch.devintensive.extensions.mutableLiveData
@@ -14,19 +15,18 @@ class GroupViewModel : ViewModel() {
     private val selectedItems = Transformations.map(userItems) { users -> users.filter { it.isSelected } }
 
     fun getUserData(): LiveData<List<UserItem>> {
-//        val result = MediatorLiveData<List<UserItem>>()
-//        val filterF = {
-//            val queryStr = query.value!!
-//            val users = userItems.value!!
-//            result.value = if (queryStr.isEmpty()) users
-//            else users.filter { it.fullName.contains(queryStr, true) }
-//        }
-//
-//        result.addSource(userItems) { filterF.invoke() }
-//        result.addSource(query) { filterF.invoke() }
-//
-//        return result
-        return userItems
+        val result = MediatorLiveData<List<UserItem>>()
+        val filterF = {
+            val queryStr = query.value!!
+            val users = userItems.value!!
+            result.value = if (queryStr.isEmpty()) users
+            else users.filter { it.fullName.contains(queryStr, true) }
+        }
+
+        result.addSource(userItems) { filterF.invoke() }
+        result.addSource(query) { filterF.invoke() }
+
+        return result
     }
 
     fun getSelectedData(): LiveData<List<UserItem>> = selectedItems

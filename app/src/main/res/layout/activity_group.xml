@@ -23,41 +23,41 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/spacing_normal_16"
-            android:paddingRight="@dimen/spacing_normal_16"
             android:layout_marginTop="@dimen/spacing_small_8"
             android:layout_marginBottom="@dimen/spacing_small_8"
-            android:visibility="gone"
-            tools:visibility="visible">
+            android:paddingLeft="@dimen/spacing_normal_16"
+            android:paddingRight="@dimen/spacing_normal_16"
+            android:visibility="visible"
+            tools:visibility="visible" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_user_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_user_list">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_user_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_user_list">
 
-            </androidx.recyclerview.widget.RecyclerView>
-        </com.google.android.material.chip.ChipGroup>
+        </androidx.recyclerview.widget.RecyclerView>
+
     </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/spacing_normal_16"
-        android:src="@drawable/ic_arrow_forward_black_24dp"
-        android:visibility="invisible"
         android:scaleX="0"
         android:scaleY="0"
-        tools:visibility="visible"
+        android:src="@drawable/ic_arrow_forward_black_24dp"
+        android:visibility="invisible"
         tools:scaleX="1"
         tools:scaleY="1"
-        />
+        tools:visibility="visible" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
