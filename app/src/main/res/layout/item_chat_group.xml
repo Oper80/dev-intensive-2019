@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_title_group"
-        android:layout_marginRight="@dimen/spacing_tiny_4"
+        android:layout_marginLeft="@dimen/spacing_normal_16"
         android:layout_toRightOf="@id/iv_avatar_group"
         android:fontFamily="sans-serif-medium"
         android:textColor="@color/color_primary"

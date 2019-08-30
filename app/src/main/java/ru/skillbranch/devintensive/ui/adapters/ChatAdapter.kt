@@ -17,9 +17,9 @@ import ru.skillbranch.devintensive.models.data.ChatType
 
 class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatAdapter.ChatItemViewHolder>() {
     companion object {
-        private const val ARCHIVE_TYPE = 0
-        private const val SINGLE_TYPE = 1
-        private const val GROUP_TYPE = 2
+        private const val SINGLE_TYPE = 0
+        private const val GROUP_TYPE = 1
+        private const val ARCHIVE_TYPE = 2
     }
 
     var items: List<ChatItem> = listOf()
@@ -42,8 +42,8 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
 
     override fun getItemViewType(position: Int): Int = when (items[position].chatType) {
         ChatType.ARCHIVE -> ARCHIVE_TYPE
-        ChatType.GROUP -> SINGLE_TYPE
-        ChatType.SINGLE -> GROUP_TYPE
+        ChatType.GROUP -> GROUP_TYPE
+        ChatType.SINGLE -> SINGLE_TYPE
     }
 
     fun updateData(data: List<ChatItem>) {

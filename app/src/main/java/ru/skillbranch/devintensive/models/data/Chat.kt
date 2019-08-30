@@ -18,21 +18,21 @@ data class Chat(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun unreadableMessageCount(): Int {
 
-        return messages.filter { it.isReaded }.size  //TODO isReaded or !isReaded?
+        return messages.filter { !it.isReaded }.size
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun lastMessageDate(): Date? {
-        //TODO implement me
-        return Date()
+        return when(val lastMessage = messages.lastOrNull()){
+            null -> null
+            else -> lastMessage.date
+        }
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun lastMessageShort(): Pair<String?, String?> = when (val lastMessage = messages.lastOrNull()) {
-        //TODO implement me
-        null -> "null message" to null
         is TextMessage -> lastMessage.text to lastMessage.from.firstName
-        is ImageMessage -> "Image" to lastMessage.from.firstName
+        is ImageMessage -> "${lastMessage.from.firstName} - отправил фото" to lastMessage.from.firstName
         else -> null to null
     }
 
@@ -49,7 +49,8 @@ data class Chat(
                     lastMessageShort().first,
                     unreadableMessageCount(),
                     lastMessageDate()?.shortFormat(),
-                    user.isOnline
+                    user.isOnline,
+                    ChatType.SINGLE
             )
         } else {
             ChatItem(

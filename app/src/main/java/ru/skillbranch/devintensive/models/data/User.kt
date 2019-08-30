@@ -59,7 +59,7 @@ data class User(
 
     fun toUserItem(): UserItem {
         val lastActivity = when {
-            lastVisit == null -> "Еще ни разу не был"
+            lastVisit == null -> "Еще ни разу не заходил"
             isOnline -> "online"
             else -> "Последний раз был ${lastVisit.humanizeDiff()}"
         }

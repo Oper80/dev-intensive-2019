@@ -391,7 +391,7 @@ object DataGenerator {
         return list
     }
 
-    public fun generateChats(count: Int, hasGroups: Boolean = false): List<Chat> {
+    fun generateChats(count: Int, hasGroups: Boolean = false): List<Chat> {
         val list = mutableListOf<Chat>()
         val users = generateUsers(count)
         for (user in users) {

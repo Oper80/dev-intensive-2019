@@ -12,7 +12,7 @@ import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.data.UserItem
 
 class UserAdapter(val listener: (UserItem) -> Unit) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
-    private var items: List<UserItem> = listOf()
+    var items: List<UserItem> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -20,13 +20,11 @@ class UserAdapter(val listener: (UserItem) -> Unit) : RecyclerView.Adapter<UserA
         return UserViewHolder(convertView)
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) = holder.bind(items[position], listener)
 
-    fun updateData(data:List<UserItem>){
+    fun updateData(data: List<UserItem>) {
         val diffCallback = object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldPos: Int, newPos: Int): Boolean = items[oldPos].id == data[newPos].id
 
@@ -50,15 +48,15 @@ class UserAdapter(val listener: (UserItem) -> Unit) : RecyclerView.Adapter<UserA
                 Glide.with(itemView)
                         .load(user.avatar)
                         .into(iv_avatar_user)
-            }else{
+            } else {
                 Glide.with(itemView).clear(iv_avatar_user)
                 iv_avatar_user.setInitials(user.initials ?: "??")
             }
             sv_indicator.visibility = if (user.isOnline) View.VISIBLE else View.GONE
             tv_user_name.text = user.fullName
             tv_user_last_activity.text = user.lastActivity
-            iv_selected.visibility = if(user.isSelected) View.VISIBLE else View.GONE
-            itemView.setOnClickListener{listener.invoke(user)}
+            iv_selected.visibility = if (user.isSelected) View.VISIBLE else View.GONE
+            itemView.setOnClickListener { listener.invoke(user) }
         }
     }
 }
