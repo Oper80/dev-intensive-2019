@@ -34,7 +34,7 @@
             android:layout_marginBottom="@dimen/spacing_small_8"
             android:paddingLeft="@dimen/spacing_normal_16"
             android:paddingRight="@dimen/spacing_normal_16"
-            android:visibility="visible"
+            android:visibility="invisible"
             tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView

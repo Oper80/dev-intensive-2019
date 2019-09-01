@@ -7,31 +7,30 @@ import androidx.lifecycle.ViewModel
 import ru.skillbranch.devintensive.extensions.mutableLiveData
 import ru.skillbranch.devintensive.models.data.ChatItem
 import ru.skillbranch.devintensive.repositories.ChatRepository
-import ru.skillbranch.devintensive.utils.DataGenerator
 
-class MainViewModel : ViewModel() {
-    private val chatRepository = ChatRepository
+class ArchiveViewModel : ViewModel() {
     private var query = mutableLiveData("")
+    private val chatRepository = ChatRepository
 
-    private val chats = Transformations.map(chatRepository.loadChats()){chats ->
+    private val chats = Transformations.map(chatRepository.loadChats()) { chats ->
 
-        return@map chats.filter{!it.isArchived}
-                .map{if (!it.isLastArchiveChat) it.toChatItem() else it.toArchiveChatItem()}
-                .sortedBy { it.chatType }
+        return@map chats.filter { it.isArchived }
+                .map { it.toChatItem() }
                 .sortedBy { it.id.toInt() }
     }
 
     fun getChatData(): LiveData<List<ChatItem>> {
-        val result = MediatorLiveData<List<ChatItem>>()
+        var result = MediatorLiveData<List<ChatItem>>()
         val filterF = {
             val queryStr = query.value!!
-            val chatsList = chats.value!!
-            result.value = if (queryStr.isEmpty()) chatsList
-            else chatsList.filter { it.title.contains(queryStr, true) }
+            val chatsVal = chats.value!!
+            result.value = if (queryStr.isEmpty()) chatsVal
+            else chatsVal.filter { it.title.contains(queryStr, true) }
         }
 
         result.addSource(chats) { filterF.invoke() }
         result.addSource(query) { filterF.invoke() }
+
         return result
     }
 
@@ -41,12 +40,11 @@ class MainViewModel : ViewModel() {
         chatRepository.update(chat.copy(isArchived = true))
     }
 
-    fun restoreFromArchive(chatId:String){
+    fun restoreFromArchive(chatId: String) {
         val chat = chatRepository.find(chatId)
         chat ?: return
         chatRepository.update(chat.copy(isArchived = false))
     }
-
     fun handleSearchQuery(text: String) {
         query.value = text
     }
