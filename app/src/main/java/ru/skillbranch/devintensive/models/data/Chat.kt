@@ -67,6 +67,21 @@ data class Chat(
             )
         }
     }
+
+    fun toArchiveChatItem(): ChatItem {
+        return ChatItem(
+                "0",
+                null,
+                "",
+                "Архив чатов",
+                lastMessageShort().first,
+                unreadableMessageCount(),
+                lastMessageDate()?.shortFormat(),
+                false,
+                ChatType.ARCHIVE,
+                lastMessageShort().second
+        )
+    }
 }
 
 enum class ChatType {
