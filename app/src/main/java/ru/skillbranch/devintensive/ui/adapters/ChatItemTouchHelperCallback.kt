@@ -30,7 +30,7 @@ class ChatItemTouchHelperCallback(val adapter: ChatAdapter, val swipeListener: (
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        if(viewHolder.itemViewType != ChatAdapter.ARCHIVE_TYPE) {
+        if (viewHolder.itemViewType != ChatAdapter.ARCHIVE_TYPE) {
             swipeListener.invoke(adapter.items[viewHolder.adapterPosition])
         }
     }
@@ -60,17 +60,22 @@ class ChatItemTouchHelperCallback(val adapter: ChatAdapter, val swipeListener: (
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             val itemView = viewHolder.itemView
             drawBackground(canvas, itemView, dX)
-            drawIcon(canvas, itemView, dX)
+            drawIcon(canvas, itemView, recyclerView, dX)
         }
         super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }
 
-    private fun drawIcon(canvas: Canvas, itemView: View, dX: Float) {
-        val icon = itemView.resources.getDrawable(R.drawable.ic_archive_black_24dp,itemView.context.theme)
+    private fun drawIcon(canvas: Canvas, itemView: View, recyclerView: RecyclerView, dX: Float) {
+
+        val icon = if (recyclerView.id == R.id.rv_chat_list) {
+            itemView.resources.getDrawable(R.drawable.ic_archive_black_24dp, itemView.context.theme)
+        } else {
+            itemView.resources.getDrawable(R.drawable.ic_unarchive_black_24dp, itemView.context.theme)
+        }
         val iconSize = itemView.resources.getDimensionPixelSize(R.dimen.icon_size)
         val space = itemView.resources.getDimensionPixelSize(R.dimen.spacing_normal_16)
         val margin = (itemView.bottom - itemView.top - iconSize) / 2
-        with(iconBounds){
+        with(iconBounds) {
             left = itemView.right + dX.toInt() + space
             top = itemView.top + margin
             right = itemView.right + dX.toInt() + iconSize + space
@@ -87,7 +92,7 @@ class ChatItemTouchHelperCallback(val adapter: ChatAdapter, val swipeListener: (
             right = itemView.right.toFloat()
             bottom = itemView.bottom.toFloat()
         }
-        with(bgPaint){
+        with(bgPaint) {
             color = itemView.resources.getColor(R.color.color_primary_dark, itemView.context.theme)
         }
         canvas.drawRect(bgRect, bgPaint)
