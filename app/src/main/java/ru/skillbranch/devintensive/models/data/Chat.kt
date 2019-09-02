@@ -68,14 +68,18 @@ data class Chat(
         }
     }
 
-    fun toArchiveChatItem(): ChatItem {
+    fun toArchiveChatItem(chats : List<Chat>): ChatItem {
+        var unreadMessages = 0
+        for(c in chats){
+            unreadMessages += c.messages.filter { !it.isReaded }.size
+        }
         return ChatItem(
                 "0",
                 null,
                 "",
                 "Архив чатов",
                 lastMessageShort().first,
-                unreadableMessageCount(),
+                unreadMessages,
                 lastMessageDate()?.shortFormat(),
                 false,
                 ChatType.ARCHIVE,
@@ -85,9 +89,9 @@ data class Chat(
 }
 
 enum class ChatType {
+    ARCHIVE,
     SINGLE,
-    GROUP,
-    ARCHIVE
+    GROUP
 }
 
 

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.data.ChatItem
+import ru.skillbranch.devintensive.ui.main.MainActivity
 
 class ChatItemTouchHelperCallback(val adapter: ChatAdapter, val swipeListener: (ChatItem) -> Unit) : ItemTouchHelper.Callback() {
 
@@ -29,7 +30,9 @@ class ChatItemTouchHelperCallback(val adapter: ChatAdapter, val swipeListener: (
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        swipeListener.invoke(adapter.items[viewHolder.adapterPosition])
+        if(viewHolder.itemViewType != ChatAdapter.ARCHIVE_TYPE) {
+            swipeListener.invoke(adapter.items[viewHolder.adapterPosition])
+        }
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {

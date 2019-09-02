@@ -21,7 +21,7 @@ class MainViewModel : ViewModel() {
                     if (isArchived) listOf(toArchiveItem(chats))
                     else chats.map { it.toChatItem() }
 
-                }.sortedBy { it.id.toInt() }
+                }.sortedWith(compareBy({it.chatType}, {it.id.toInt()}))
     }
 
     fun getChatData(): LiveData<List<ChatItem>> {
@@ -75,7 +75,7 @@ class MainViewModel : ViewModel() {
         if (lastArchiveChat == null) {
             lastArchiveChat = chats[0]
         }
-        return lastArchiveChat.toArchiveChatItem()
+        return lastArchiveChat.toArchiveChatItem(chats)
     }
 }
 

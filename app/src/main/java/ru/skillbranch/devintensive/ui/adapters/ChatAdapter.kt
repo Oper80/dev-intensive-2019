@@ -1,10 +1,12 @@
 package ru.skillbranch.devintensive.ui.adapters
 
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,15 +15,17 @@ import kotlinx.android.synthetic.main.item_chat_archive.*
 import kotlinx.android.synthetic.main.item_chat_group.*
 import kotlinx.android.synthetic.main.item_chat_group.tv_message_group
 import kotlinx.android.synthetic.main.item_chat_single.*
+import ru.skillbranch.devintensive.App
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.data.ChatItem
 import ru.skillbranch.devintensive.models.data.ChatType
+import ru.skillbranch.devintensive.ui.archive.ArchiveActivity
 
 class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatAdapter.ChatItemViewHolder>() {
     companion object {
         private const val SINGLE_TYPE = 0
         private const val GROUP_TYPE = 1
-        private const val ARCHIVE_TYPE = 2
+        const val ARCHIVE_TYPE = 2
     }
 
     var items: List<ChatItem> = listOf()
@@ -141,15 +145,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
         }
     }
 
-    inner class ArchiveViewHolder(convertView: View) : ChatItemViewHolder(convertView), LayoutContainer, ItemTouchViewHolder {
-
-        override fun onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY)
-        }
-
-        override fun onItemCleared() {
-            itemView.setBackgroundColor(Color.WHITE)
-        }
+    inner class ArchiveViewHolder(convertView: View) : ChatItemViewHolder(convertView), LayoutContainer {
 
         override fun bind(item: ChatItem, listener: (ChatItem) -> Unit) {
 
@@ -168,7 +164,8 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
                 text = item.author
             }
             itemView.setOnClickListener {
-                listener.invoke(item)
+                val intent = Intent(App.applicationContext(), ArchiveActivity::class.java)
+                startActivity(App.applicationContext(), intent, null)
             }
         }
     }
