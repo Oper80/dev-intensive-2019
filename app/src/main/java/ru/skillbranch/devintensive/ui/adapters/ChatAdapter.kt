@@ -122,7 +122,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
             itemView.setBackgroundColor(Color.WHITE)
         }
 
-        @SuppressLint("SetTextI18n")
+
         override fun bind(item: ChatItem, listener: (ChatItem) -> Unit) {
 
             iv_avatar_group.setInitials(item.title[0].toString())
@@ -139,7 +139,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
             tv_message_group.text = item.shortDescription
             with(tv_message_author) {
                 visibility = if (item.messageCount > 0) View.VISIBLE else View.GONE
-                text = "@${item.author}"
+                text = item.author
             }
             itemView.setOnClickListener {
                 listener.invoke(item)
@@ -148,6 +148,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
     }
 
     inner class ArchiveViewHolder(convertView: View) : ChatItemViewHolder(convertView), LayoutContainer {
+
 
         override fun bind(item: ChatItem, listener: (ChatItem) -> Unit) {
 
@@ -163,7 +164,8 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
             tv_message_archive.text = item.shortDescription
             with(tv_message_author_archive) {
                 visibility = if (item.messageCount > 0) View.VISIBLE else View.GONE
-                text = item.author
+                val txt = "@${item.author}"
+                text = txt
             }
             itemView.setOnClickListener {
                 val intent = Intent(App.applicationContext(), ArchiveActivity::class.java)
