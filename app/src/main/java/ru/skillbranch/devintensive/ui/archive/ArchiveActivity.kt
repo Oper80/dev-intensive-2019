@@ -59,7 +59,7 @@ class ArchiveActivity : AppCompatActivity() {
             Snackbar.make(rv_archive_list, "Click on ${it.title}", Snackbar.LENGTH_LONG).show()
         }
         val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        val touchCallback = ChatItemTouchHelperCallback(chatAdapter) {chatItem ->
+        val touchCallback = ChatItemTouchHelperCallback(chatAdapter) { chatItem ->
             viewModel.restoreFromArchive(chatItem.id)
             Snackbar.make(rv_archive_list, "Вы точно хотите вернуть ${chatItem.title} из архива?", Snackbar.LENGTH_LONG)
                     .setAction("UNDO") {

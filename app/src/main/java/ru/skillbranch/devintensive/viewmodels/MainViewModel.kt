@@ -5,20 +5,23 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import ru.skillbranch.devintensive.extensions.mutableLiveData
+import ru.skillbranch.devintensive.models.BaseMessage
+import ru.skillbranch.devintensive.models.data.Chat
 import ru.skillbranch.devintensive.models.data.ChatItem
 import ru.skillbranch.devintensive.repositories.ChatRepository
-import ru.skillbranch.devintensive.utils.DataGenerator
 
 class MainViewModel : ViewModel() {
     private val chatRepository = ChatRepository
     private var query = mutableLiveData("")
 
-    private val chats = Transformations.map(chatRepository.loadChats()){chats ->
+    private val chats = Transformations.map(chatRepository.loadChats()) { chats ->
 
-        return@map chats.filter{!it.isArchived}
-                .map{if (!it.isLastArchiveChat) it.toChatItem() else it.toArchiveChatItem()}
-                .sortedBy { it.chatType }
-                .sortedBy { it.id.toInt() }
+        return@map chats.groupBy { it.isArchived }
+                .flatMap { (isArchived, chats) ->
+                    if (isArchived) listOf(toArchiveItem(chats))
+                    else chats.map { it.toChatItem() }
+
+                }.sortedBy { it.id.toInt() }
     }
 
     fun getChatData(): LiveData<List<ChatItem>> {
@@ -41,7 +44,7 @@ class MainViewModel : ViewModel() {
         chatRepository.update(chat.copy(isArchived = true))
     }
 
-    fun restoreFromArchive(chatId:String){
+    fun restoreFromArchive(chatId: String) {
         val chat = chatRepository.find(chatId)
         chat ?: return
         chatRepository.update(chat.copy(isArchived = false))
@@ -50,4 +53,30 @@ class MainViewModel : ViewModel() {
     fun handleSearchQuery(text: String) {
         query.value = text
     }
+
+    private fun toArchiveItem(chats: List<Chat>): ChatItem {
+
+        val f = Comparator<BaseMessage?> { m1, m2 ->
+            when {
+                m2 == null -> 1
+                m1 == null -> -1
+                m1.date > m2.date -> 1
+                else -> -1
+            }
+        }
+        var lastArchiveChat: Chat? = chats.maxWith(Comparator { c1, c2 ->
+            when {
+                c2.messages.size == 0 -> 1
+                c1.messages.size == 0 -> -1
+                c1?.messages?.maxWith(f)?.date!! > c2?.messages?.maxWith(f)?.date -> 1
+                else -> -1
+            }
+        })
+        if (lastArchiveChat == null) {
+            lastArchiveChat = chats[0]
+        }
+        return lastArchiveChat.toArchiveChatItem()
+    }
 }
+
+

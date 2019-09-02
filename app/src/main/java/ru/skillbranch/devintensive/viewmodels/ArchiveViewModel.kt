@@ -45,6 +45,7 @@ class ArchiveViewModel : ViewModel() {
         chat ?: return
         chatRepository.update(chat.copy(isArchived = false))
     }
+
     fun handleSearchQuery(text: String) {
         query.value = text
     }

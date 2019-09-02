@@ -13,8 +13,7 @@ data class Chat(
         val title: String,
         val members: List<User> = listOf(),
         var messages: MutableList<BaseMessage> = mutableListOf(),
-        var isArchived: Boolean = false,
-        val isLastArchiveChat: Boolean = false
+        var isArchived: Boolean = false
 ) {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun unreadableMessageCount(): Int {
@@ -24,7 +23,7 @@ data class Chat(
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun lastMessageDate(): Date? {
-        return when (val lastMessage = messages.lastOrNull()) {
+        return when(val lastMessage = messages.lastOrNull()){
             null -> null
             else -> lastMessage.date
         }
@@ -71,7 +70,7 @@ data class Chat(
 
     fun toArchiveChatItem(): ChatItem {
         return ChatItem(
-                id,
+                "0",
                 null,
                 "",
                 "Архив чатов",
