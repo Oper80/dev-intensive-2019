@@ -1,5 +1,6 @@
 package ru.skillbranch.devintensive.ui.adapters
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.util.Log
@@ -121,6 +122,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
             itemView.setBackgroundColor(Color.WHITE)
         }
 
+        @SuppressLint("SetTextI18n")
         override fun bind(item: ChatItem, listener: (ChatItem) -> Unit) {
 
             iv_avatar_group.setInitials(item.title[0].toString())
@@ -137,7 +139,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
             tv_message_group.text = item.shortDescription
             with(tv_message_author) {
                 visibility = if (item.messageCount > 0) View.VISIBLE else View.GONE
-                text = item.author
+                text = "@${item.author}"
             }
             itemView.setOnClickListener {
                 listener.invoke(item)
