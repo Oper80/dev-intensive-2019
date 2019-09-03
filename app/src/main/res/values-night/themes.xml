@@ -2,15 +2,25 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@android:color/white</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent_night</item>
+        <item name="colorIndicator">@color/color_gray_dark</item>
+        <item name="colorSVIndicator">@color/color_accent_night</item>
+        <item name="colorItemBackground">@color/color_item_dark</item>
+        <item name="colorToolbar">@color/color_toolbar_night</item>
+        <item name="colorGrayDark">@color/color_gray</item>
 
         <item name="colorAccentedSurface">@color/color_divider_light</item>
         <item name="colorIcon">@android:color/white</item>
         <item name="colorDivider">@color/color_divider_dark</item>
         <item name="android:statusBarColor">@android:color/black</item>
+        <item name="colorSnackBarText">@color/color_snackbar_text_dark</item>
+        <item name="colorDoneIcon">@color/color_accent_night</item>
+        <item name="colorChip">@color/color_item_dark</item>
+        <item name="colorChipCloseIcon">@color/color_gray</item>
 
     </style>
+
 </resources>
+

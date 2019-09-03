@@ -97,7 +97,7 @@ class ProfileActivity : AppCompatActivity() {
         val fn = et_first_name.text?.toString()
         val ln = et_last_name.text?.toString()
         initials = Utils.toInitials(fn, ln) ?: ""
-        if (initials != ""){
+        if (initials != "") {
             drawDefaultAvatar(initials)
         }
     }
@@ -158,7 +158,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
-
     private fun saveProfileInfo() {
         Profile(
                 firstName = et_first_name.text.toString(),
@@ -177,10 +176,10 @@ class ProfileActivity : AppCompatActivity() {
         iv_avatar.setImageDrawable(drawable)
     }
 
-    private fun textAsBitmap(text:String, textSize:Float, textColor:Int): Bitmap {
+    private fun textAsBitmap(text: String, textSize: Float, textColor: Int): Bitmap {
         val dp = resources.displayMetrics.density.roundToInt()
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        paint.textSize = textSize*dp
+        paint.textSize = textSize * dp
         paint.color = textColor
         paint.textAlign = Paint.Align.CENTER
 
@@ -190,7 +189,7 @@ class ProfileActivity : AppCompatActivity() {
         image.eraseColor(fetchAccentColor())
         val canvas = Canvas(image)
 
-        canvas.drawText(text, 48f*dp, 48f*dp + paint.textSize/3, paint)
+        canvas.drawText(text, 48f * dp, 48f * dp + paint.textSize / 3, paint)
         return image
     }
 

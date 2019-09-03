@@ -104,7 +104,7 @@ class CircleImageView @JvmOverloads constructor(
 
         if (borderWidth > 0) {
             borderPaint.color = borderColor
-            borderPaint.strokeWidth = borderWidth.toFloat()
+            borderPaint.strokeWidth = borderWidth
             canvas.drawCircle(halfWidth, halfHeight, radius - borderWidth / 2, borderPaint)
         }
 

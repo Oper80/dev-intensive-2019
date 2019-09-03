@@ -18,4 +18,14 @@
     <attr name="colorDivider" format="reference"/>
     <attr name="colorIcon" format="reference"/>
 
+    <attr name="colorGrayDark" format="reference"/>
+    <attr name="colorIndicator" format="reference"/>
+    <attr name="colorSVIndicator" format="reference"/>
+    <attr name="colorItemBackground" format="reference"/>
+    <attr name="colorToolbar" format="reference"/>
+    <attr name="colorSnackBarText" format="reference"/>
+    <attr name="colorDoneIcon" format="reference"/>
+    <attr name="colorChip" format="reference"/>
+    <attr name="colorChipCloseIcon" format="reference"/>
+
 </resources>

@@ -3,19 +3,27 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
+        <item name="colorGrayDark">@color/color_gray_dark</item>
+        <item name="colorIndicator">@color/color_indicator</item>
+        <item name="colorSVIndicator">@color/color_green</item>
+        <item name="colorItemBackground">@color/color_item_light</item>
+        <item name="colorToolbar">@color/color_primary</item>
 
         <item name="colorAccentedSurface">@color/color_primary_light</item>
         <item name="colorIcon">@color/color_gray</item>
         <item name="colorDivider">@color/color_divider_dark</item>
+        <item name="colorSnackBarText">@color/color_item_light</item>
+        <item name="colorDoneIcon">@color/color_primary</item>
+        <item name="colorChip">@color/color_primary_light</item>
+        <item name="colorChipCloseIcon">@color/color_item_light</item>
 
         <item name="android:windowActivityTransitions">true</item>
         <item name="android:windowAnimationStyle">@style/ActivityTransition</item>
-
     </style>
+
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/ic_splash</item>
