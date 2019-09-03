@@ -19,7 +19,7 @@
     <attr name="colorIcon" format="reference"/>
 
     <attr name="colorGrayDark" format="reference"/>
-    <attr name="colorIndicator" format="reference"/>
+    <attr name="colorCounter" format="reference"/>
     <attr name="colorSVIndicator" format="reference"/>
     <attr name="colorItemBackground" format="reference"/>
     <attr name="colorToolbar" format="reference"/>
