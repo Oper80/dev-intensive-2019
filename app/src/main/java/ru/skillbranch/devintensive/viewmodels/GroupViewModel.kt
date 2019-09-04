@@ -54,8 +54,7 @@ class GroupViewModel : ViewModel() {
     }
 
     private fun loadUsers(): List<UserItem> {
-        val tmp = groupRepository.loadUsers().map { it.toUserItem() }
-        return tmp
+        return groupRepository.loadUsers().map { it.toUserItem() }
     }
 
 

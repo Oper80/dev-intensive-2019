@@ -26,8 +26,28 @@ class CircleImageView @JvmOverloads constructor(
         private const val DEFAULT_TEXT_COLOR = Color.WHITE
     }
 
-    private val circlePaint: Paint = Paint().apply { isAntiAlias = true }
-    private val borderPaint: Paint = Paint().apply { isAntiAlias = true }
+    private val maskPaint: Paint = Paint().apply {
+        isAntiAlias = true
+        isFilterBitmap = true
+        isDither = true
+//        xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
+    }
+    private val imagePaint: Paint = Paint().apply {
+        isAntiAlias = true
+        isFilterBitmap = true
+        isDither = true
+        xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+    }
+    private val borderPaint: Paint = Paint().apply {
+        isAntiAlias = true
+        style = Paint.Style.STROKE
+    }
+    private val paint = Paint().apply {
+        isAntiAlias = true
+        textSize = 40f
+        color = DEFAULT_TEXT_COLOR
+        textAlign = Paint.Align.CENTER
+    }
     private var avatarInitials: String? = null
 
     private var borderWidth: Float = DEFAULT_BORDER_WIDTH
@@ -88,16 +108,10 @@ class CircleImageView @JvmOverloads constructor(
         val halfHeight = height / 2F
         val radius = min(halfWidth, halfHeight)
 
-        circlePaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
-        canvas.drawCircle(halfWidth, halfHeight, radius, circlePaint)
-        circlePaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-        canvas.drawBitmap(bitmap!!, 0F, 0F, circlePaint)
+        canvas.drawCircle(halfWidth, halfHeight, radius, maskPaint)
+        canvas.drawBitmap(bitmap!!, 0F, 0F, imagePaint)
 
         if (isDefault) {
-            val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-            paint.textSize = 40f
-            paint.color = DEFAULT_TEXT_COLOR
-            paint.textAlign = Paint.Align.CENTER
             canvas.drawText(avatarInitials
                     ?: "??", halfWidth, halfHeight + paint.textSize / 3, paint)
         }
@@ -133,8 +147,3 @@ class CircleImageView @JvmOverloads constructor(
         return bmp
     }
 }
-
-
-
-
-
