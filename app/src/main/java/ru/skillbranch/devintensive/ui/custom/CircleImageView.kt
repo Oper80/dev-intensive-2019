@@ -3,14 +3,13 @@ package ru.skillbranch.devintensive.ui.custom
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.View
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.Dimension
 import androidx.annotation.Dimension.DP
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import ru.skillbranch.devintensive.R
 import kotlin.math.min
 
@@ -25,6 +24,7 @@ class CircleImageView @JvmOverloads constructor(
         private const val DEFAULT_BORDER_WIDTH = 2.0f
         private const val DEFAULT_TEXT_COLOR = Color.WHITE
     }
+
 
     private val maskPaint: Paint = Paint().apply {
         isAntiAlias = true
@@ -91,14 +91,14 @@ class CircleImageView @JvmOverloads constructor(
             a.recycle()
         }
         borderPaint.style = Paint.Style.STROKE
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+        setLayerType(LAYER_TYPE_HARDWARE, null)
     }
 
 
     override fun onDraw(canvas: Canvas) {
 
         if (width == 0 || height == 0) return
-        var bitmap = drawableToBitmap(width, height)
+        var bitmap = drawableToBitmap(drawable)
         val isDefault = bitmap == null
         if (isDefault) {
             bitmap = emptyBitmap()
@@ -132,18 +132,16 @@ class CircleImageView @JvmOverloads constructor(
     }
 
 
-    private fun drawableToBitmap(width: Int, height: Int): Bitmap? {
-        if (drawable == null)
-            return null
-
-        if (drawable is BitmapDrawable) {
-            return (drawable as BitmapDrawable).bitmap
-        }
-
-        val bmp = drawable.toBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bmp)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-        return bmp
-    }
+    private fun drawableToBitmap(drawable: Drawable?): Bitmap? =
+            when (drawable) {
+                null -> null
+                is BitmapDrawable -> drawable.bitmap
+                else -> {
+                    val bmp = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+                    val canvas = Canvas(bmp)
+                    drawable.setBounds(0, 0, canvas.width, canvas.height)
+                    drawable.draw(canvas)
+                    bmp
+                }
+            }
 }

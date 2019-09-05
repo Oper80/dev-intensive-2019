@@ -12,7 +12,10 @@
         android:layout_height="@dimen/avatar_item_size"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="@dimen/spacing_normal_16"
-        android:src="@drawable/ic_archive_black_24dp" />
+        android:backgroundTint="?attr/colorItemBackground"
+        android:backgroundTintMode="src_over"
+
+        android:src="@drawable/ic_archive_black_32dp" />
 
     <TextView
         android:id="@+id/tv_title_archive"
