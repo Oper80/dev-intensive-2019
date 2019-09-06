@@ -2,6 +2,7 @@ package ru.skillbranch.devintensive.ui.main
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
@@ -19,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.App
 import ru.skillbranch.devintensive.R
+import ru.skillbranch.devintensive.extensions.dp
 import ru.skillbranch.devintensive.models.data.UserItem
 import ru.skillbranch.devintensive.ui.adapters.ChatAdapter
 import ru.skillbranch.devintensive.ui.adapters.ChatItemTouchHelperCallback
@@ -50,7 +52,10 @@ class MainActivity : AppCompatActivity() {
         chatAdapter = ChatAdapter {
             Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_LONG).show()
         }
+        val myDivider = InsetDrawable(resources.getDrawable(R.drawable.chat_divider, theme), 72.dp, 0, 0, 0)
         val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        divider.setDrawable(myDivider)
+
         val touchCallback = ChatItemTouchHelperCallback(chatAdapter) {chatItem ->
             viewModel.addToArchive(chatItem.id)
             Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${chatItem.title} в архив?", Snackbar.LENGTH_LONG)
