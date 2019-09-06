@@ -1,8 +1,10 @@
 package ru.skillbranch.devintensive.ui.archive
 
+import android.graphics.drawable.InsetDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_archive.*
 import ru.skillbranch.devintensive.R
+import ru.skillbranch.devintensive.extensions.dp
 import ru.skillbranch.devintensive.ui.adapters.ChatAdapter
 import ru.skillbranch.devintensive.ui.adapters.ChatItemTouchHelperCallback
 import ru.skillbranch.devintensive.viewmodels.ArchiveViewModel
@@ -50,6 +53,16 @@ class ArchiveActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == android.R.id.home) {
+            finish()
+            overridePendingTransition(R.anim.idle, R.anim.bottom_up)
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun initToolbar() {
         setSupportActionBar(toolbar)
     }
@@ -58,7 +71,9 @@ class ArchiveActivity : AppCompatActivity() {
         chatAdapter = ChatAdapter {
             Snackbar.make(rv_archive_list, "Click on ${it.title}", Snackbar.LENGTH_LONG).show()
         }
+        val myDivider = InsetDrawable(resources.getDrawable(R.drawable.chat_divider, theme), 72.dp, 0, 0, 0)
         val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        divider.setDrawable(myDivider)
         val touchCallback = ChatItemTouchHelperCallback(chatAdapter) { chatItem ->
             viewModel.restoreFromArchive(chatItem.id)
             Snackbar.make(rv_archive_list, "Вы точно хотите вернуть ${chatItem.title} из архива?", Snackbar.LENGTH_LONG)
