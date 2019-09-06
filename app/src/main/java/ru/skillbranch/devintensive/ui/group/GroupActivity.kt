@@ -56,11 +56,12 @@ class GroupActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return if(item?.itemId == android.R.id.home){
-            overridePendingTransition(R.anim.idle, R.anim.bottom_down)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == android.R.id.home) {
+            finish()
+            overridePendingTransition(R.anim.idle, R.anim.bottom_up)
             true
-        }else {
+        } else {
             super.onOptionsItemSelected(item)
         }
     }
